@@ -1,5 +1,5 @@
 export interface Pacote {
-  id?: string; // UUID
+  id?: number
   destino_id?: string; // UUID
   nome: string;
   descricao: string;

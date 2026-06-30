@@ -79,7 +79,7 @@ CREATE TABLE Itinerario_Transporte (
 
 
 CREATE TABLE Pacote_turistico (
-    id UUID PRIMARY KEY,
+    id serial PRIMARY KEY,
     nome VARCHAR(100),
     descricao TEXT,
     preco_base DECIMAL(10, 2),
@@ -92,8 +92,6 @@ CREATE TABLE Reserva_Viagem (
     PRIMARY KEY (reserva_id, viagem_id)
 );
 
-
--- tabela Usuario
 INSERT INTO Usuario (id, nome, email, senha) VALUES
 ('550e8400-e29b-41d4-a716-446655440001', 'Alice Silva', 'alice@example.com', 'senha1'),
 ('550e8400-e29b-41d4-a716-446655440002', 'Bob Souza', 'bob@example.com', 'senha2'),
@@ -101,7 +99,6 @@ INSERT INTO Usuario (id, nome, email, senha) VALUES
 ('550e8400-e29b-41d4-a716-446655440004', 'David Lima', 'david@example.com', 'senha4'),
 ('550e8400-e29b-41d4-a716-446655440005', 'Eva Martins', 'eva@example.com', 'senha5');
 
--- tabela Destino
 INSERT INTO Destino (id, nome, pais, descricao, imagem) VALUES
 ('550e8400-e29b-41d4-a716-446655440006', 'Paris', 'França', 'Cidade Luz', pg_read_binary_file('/images/paris.jpg')),
 ('550e8400-e29b-41d4-a716-446655440007', 'Rio de Janeiro', 'Brasil', 'Cidade Maravilhosa', pg_read_binary_file('/images/rj.jpg')),
@@ -109,7 +106,6 @@ INSERT INTO Destino (id, nome, pais, descricao, imagem) VALUES
 ('550e8400-e29b-41d4-a716-446655440009', 'Tóquio', 'Japão', 'Cidade que nunca dorme', pg_read_binary_file('/images/toquio.jpg')),
 ('550e8400-e29b-41d4-a716-446655440010', 'Sydney', 'Austrália', 'Cidade costeira', pg_read_binary_file('/images/sydney.jpg'));
 
--- tabela Avaliacao
 INSERT INTO Avaliacao (id, usuario_id, destino_id, nota, comentario, data_avaliacao) VALUES
 ('550e8400-e29b-41d4-a716-446655440011', '550e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440006', 5, 'Incrível!', CURRENT_TIMESTAMP),
 ('550e8400-e29b-41d4-a716-446655440012', '550e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440007', 4, 'Muito bom!', CURRENT_TIMESTAMP),
@@ -117,7 +113,6 @@ INSERT INTO Avaliacao (id, usuario_id, destino_id, nota, comentario, data_avalia
 ('550e8400-e29b-41d4-a716-446655440014', '550e8400-e29b-41d4-a716-446655440004', '550e8400-e29b-41d4-a716-446655440009', 3, 'Foi bom, mas caro', CURRENT_TIMESTAMP),
 ('550e8400-e29b-41d4-a716-446655440015', '550e8400-e29b-41d4-a716-446655440005', '550e8400-e29b-41d4-a716-446655440010', 5, 'Maravilhoso!', CURRENT_TIMESTAMP);
 
--- tabela Reserva
 INSERT INTO Reserva (id, usuario_id, data_reserva, status) VALUES
 ('550e8400-e29b-41d4-a716-446655440016', '550e8400-e29b-41d4-a716-446655440001', CURRENT_TIMESTAMP, 'confirmada'),
 ('550e8400-e29b-41d4-a716-446655440017', '550e8400-e29b-41d4-a716-446655440002', CURRENT_TIMESTAMP, 'pendente'),
@@ -125,7 +120,6 @@ INSERT INTO Reserva (id, usuario_id, data_reserva, status) VALUES
 ('550e8400-e29b-41d4-a716-446655440019', '550e8400-e29b-41d4-a716-446655440004', CURRENT_TIMESTAMP, 'cancelada'),
 ('550e8400-e29b-41d4-a716-446655440020', '550e8400-e29b-41d4-a716-446655440005', CURRENT_TIMESTAMP, 'confirmada');
 
--- tabela Viagem
 INSERT INTO Viagem (id, data_inicio, data_fim, preco_total) VALUES
 ('550e8400-e29b-41d4-a716-446655440021', '2024-10-01', '2024-10-10', 3000.00),
 ('550e8400-e29b-41d4-a716-446655440022', '2024-11-01', '2024-11-15', 4500.00),
@@ -133,7 +127,6 @@ INSERT INTO Viagem (id, data_inicio, data_fim, preco_total) VALUES
 ('550e8400-e29b-41d4-a716-446655440024', '2024-09-15', '2024-09-25', 4000.00),
 ('550e8400-e29b-41d4-a716-446655440025', '2024-08-01', '2024-08-10', 3500.00);
 
--- tabela Itinerario
 INSERT INTO Itinerario (id, viagem_id, dia, descricao) VALUES
 ('550e8400-e29b-41d4-a716-446655440026', '550e8400-e29b-41d4-a716-446655440021', 1, 'Chegada a Paris'),
 ('550e8400-e29b-41d4-a716-446655440027', '550e8400-e29b-41d4-a716-446655440022', 1, 'Chegada ao Rio de Janeiro'),
@@ -141,7 +134,6 @@ INSERT INTO Itinerario (id, viagem_id, dia, descricao) VALUES
 ('550e8400-e29b-41d4-a716-446655440029', '550e8400-e29b-41d4-a716-446655440024', 1, 'Exploração de Shibuya'),
 ('550e8400-e29b-41d4-a716-446655440030', '550e8400-e29b-41d4-a716-446655440025', 1, 'Passeio na Sydney Opera House');
 
--- tabela Hospedagem
 INSERT INTO Hospedagem (id, nome, localizacao, preco_noite) VALUES
 ('550e8400-e29b-41d4-a716-446655440031', 'Hotel Paris', 'Centro de Paris', 150.00),
 ('550e8400-e29b-41d4-a716-446655440032', 'Hotel Rio', 'Copacabana', 200.00),
@@ -149,7 +141,6 @@ INSERT INTO Hospedagem (id, nome, localizacao, preco_noite) VALUES
 ('550e8400-e29b-41d4-a716-446655440034', 'Hotel Tokyo', 'Shinjuku', 180.00),
 ('550e8400-e29b-41d4-a716-446655440035', 'Hotel Sydney', 'Darling Harbour', 220.00);
 
--- tabela Transporte
 INSERT INTO Transporte (id, tipo, descricao, preco) VALUES
 ('550e8400-e29b-41d4-a716-446655440036', 'Aéreo', 'Voo para Paris', 1000.00),
 ('550e8400-e29b-41d4-a716-446655440037', 'Aéreo', 'Voo para Rio de Janeiro', 800.00),
@@ -157,7 +148,6 @@ INSERT INTO Transporte (id, tipo, descricao, preco) VALUES
 ('550e8400-e29b-41d4-a716-446655440039', 'Aéreo', 'Voo para Tóquio', 1500.00),
 ('550e8400-e29b-41d4-a716-446655440040', 'Aéreo', 'Voo para Sydney', 1300.00);
 
--- tabela Itinerario_Hospedagem
 INSERT INTO Itinerario_Hospedagem (itinerario_id, hospedagem_id) VALUES
 ('550e8400-e29b-41d4-a716-446655440026', '550e8400-e29b-41d4-a716-446655440031'),
 ('550e8400-e29b-41d4-a716-446655440027', '550e8400-e29b-41d4-a716-446655440032'),
@@ -165,7 +155,6 @@ INSERT INTO Itinerario_Hospedagem (itinerario_id, hospedagem_id) VALUES
 ('550e8400-e29b-41d4-a716-446655440029', '550e8400-e29b-41d4-a716-446655440034'),
 ('550e8400-e29b-41d4-a716-446655440030', '550e8400-e29b-41d4-a716-446655440035');
 
--- tabela Itinerario_Transporte
 INSERT INTO Itinerario_Transporte (itinerario_id, transporte_id) VALUES
 ('550e8400-e29b-41d4-a716-446655440026', '550e8400-e29b-41d4-a716-446655440036'),
 ('550e8400-e29b-41d4-a716-446655440027', '550e8400-e29b-41d4-a716-446655440037'),
@@ -173,7 +162,6 @@ INSERT INTO Itinerario_Transporte (itinerario_id, transporte_id) VALUES
 ('550e8400-e29b-41d4-a716-446655440029', '550e8400-e29b-41d4-a716-446655440039'),
 ('550e8400-e29b-41d4-a716-446655440030', '550e8400-e29b-41d4-a716-446655440040');
 
--- tabela Pagamento
 INSERT INTO Pagamento (id, reserva_id, metodo_pagamento, valor_pago, data_pagamento) VALUES
 ('550e8400-e29b-41d4-a716-446655440060', '550e8400-e29b-41d4-a716-446655440016', 'Cartão de Crédito', 250.00, '2024-09-01T12:00:00Z'),
 ('550e8400-e29b-41d4-a716-446655440061', '550e8400-e29b-41d4-a716-446655440017', 'Boleto Bancário', 180.00, '2024-09-02T14:00:00Z'),
@@ -181,7 +169,6 @@ INSERT INTO Pagamento (id, reserva_id, metodo_pagamento, valor_pago, data_pagame
 ('550e8400-e29b-41d4-a716-446655440063', '550e8400-e29b-41d4-a716-446655440019', 'Cartão de Débito', 150.00, '2024-09-04T18:00:00Z'),
 ('550e8400-e29b-41d4-a716-446655440064', '550e8400-e29b-41d4-a716-446655440020', 'PayPal', 275.00, '2024-09-05T10:00:00Z');
 
--- tabela Reserva_Viagem
 INSERT INTO Reserva_Viagem (reserva_id, viagem_id) VALUES
 ('550e8400-e29b-41d4-a716-446655440016', '550e8400-e29b-41d4-a716-446655440021'),
 ('550e8400-e29b-41d4-a716-446655440017', '550e8400-e29b-41d4-a716-446655440022'),
@@ -189,11 +176,70 @@ INSERT INTO Reserva_Viagem (reserva_id, viagem_id) VALUES
 ('550e8400-e29b-41d4-a716-446655440019', '550e8400-e29b-41d4-a716-446655440024'),
 ('550e8400-e29b-41d4-a716-446655440020', '550e8400-e29b-41d4-a716-446655440025');
 
--- tabela Pacote_turistico
-INSERT INTO Pacote_turistico (id, nome, descricao, preco_base, destino_id) VALUES
-('550e8400-e29b-41d4-a716-446655440065', 'Pacote A', 'Pacote turístico para praias brasileiras', 1200.00, '550e8400-e29b-41d4-a716-446655440007'),
-('550e8400-e29b-41d4-a716-446655440066', 'Pacote B', 'Pacote de aventura na França', 1500.00, '550e8400-e29b-41d4-a716-446655440006'),
-('550e8400-e29b-41d4-a716-446655440067', 'Pacote C', 'Tour cultural por Tóquio', 1000.00, '550e8400-e29b-41d4-a716-446655440009'),
-('550e8400-e29b-41d4-a716-446655440068', 'Pacote D', 'Exploração gastronômica em Sydney', 1100.00, '550e8400-e29b-41d4-a716-446655440010'),
-('550e8400-e29b-41d4-a716-446655440069', 'Pacote E', 'Escapada romântica para Nova York', 900.00, '550e8400-e29b-41d4-a716-446655440008');
+INSERT INTO Pacote_turistico (nome, descricao, preco_base, destino_id) VALUES
+('Pacote A', 'Pacote turístico para praias brasileiras', 1200.00, '550e8400-e29b-41d4-a716-446655440007'),
+('Pacote B', 'Pacote de aventura na França', 1500.00, '550e8400-e29b-41d4-a716-446655440006'),
+('Pacote C', 'Tour cultural por Tóquio', 1000.00, '550e8400-e29b-41d4-a716-446655440009'),
+('Pacote D', 'Exploração gastronômica em Sydney', 1100.00, '550e8400-e29b-41d4-a716-446655440010'),
+('Pacote E', 'Escapada romântica para Nova York', 900.00, '550e8400-e29b-41d4-a716-446655440008');
 
+CREATE OR REPLACE VIEW avaliacoes_completas AS
+SELECT
+    a.id AS avaliacao_id,
+    u.id AS usuario_id,
+    u.nome AS usuario_nome,
+    u.email AS usuario_email,
+    u.data_criacao AS usuario_data_criacao,
+    a.destino_id AS destino_id,
+    d.nome AS destino_nome,
+    d.pais AS destino_pais,
+    d.descricao AS destino_descricao,
+    a.nota,
+    a.comentario,
+    a.data_avaliacao
+FROM
+    avaliacao a
+JOIN
+    usuario u ON a.usuario_id = u.id
+JOIN
+    destino d ON a.destino_id = d.id;
+
+CREATE OR REPLACE FUNCTION AtualizaDestino()
+RETURNS TRIGGER AS $$
+DECLARE
+    media_avaliacao NUMERIC(4,2);
+    qtd_avaliacoes INT;
+    classificacao_destino VARCHAR(20);
+BEGIN
+    SELECT 
+        COALESCE(AVG(nota), 0),
+        COUNT(*)
+    INTO media_avaliacao, qtd_avaliacoes
+    FROM avaliacao
+    WHERE destino_id = NEW.destino_id;
+    
+    IF qtd_avaliacoes = 0 THEN
+        classificacao_destino := 'Sem Avaliações';
+    ELSIF media_avaliacao >= 4.5 THEN
+        classificacao_destino := 'Excelente';
+    ELSIF media_avaliacao >= 3.5 THEN
+        classificacao_destino := 'Bom';
+    ELSIF media_avaliacao >= 2.5 THEN
+        classificacao_destino := 'Regular';
+    ELSE
+        classificacao_destino := 'Ruim';
+    END IF;
+
+    UPDATE destino
+    SET descricao = descricao || ' | Classificação: ' || classificacao_destino
+    WHERE id = NEW.destino_id;
+
+    RETURN NEW;
+
+END
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER AtualizaDestinoTrigger
+AFTER INSERT OR UPDATE ON avaliacao
+FOR EACH ROW
+EXECUTE FUNCTION AtualizaDestino();
