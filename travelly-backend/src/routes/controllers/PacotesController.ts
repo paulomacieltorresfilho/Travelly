@@ -15,4 +15,15 @@ export class PacoteController {
         .json({ message: "Erro ao buscar pacotes para o destino.", error });
     }
   }
+
+  static async updatePackagePrices(_: Request, res: Response) {
+    try {
+      await pacoteRepository.updatePrices();
+      return res.status(200).json({ message: "Preços dos pacotes atualizados com sucesso." });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "Erro ao atualizar preços dos pacotes.", error });
+    }
+  }
 }

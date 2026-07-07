@@ -8,4 +8,5 @@ export interface Pacote {
 
 export interface IPacoteRepository {
   getByDestinyId(id: string): Promise<Pacote[] | null>;
+  updatePrices(): Promise<void>;
 }

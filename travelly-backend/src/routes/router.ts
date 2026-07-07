@@ -65,5 +65,6 @@ router.get("/views/get/:id", ViewsController.getRatingInfo);
 
 //! rotas para pacotes_turisticos
 router.get("/views/get-destiny-packs/:id", PacoteController.getPackageInfo);
+router.post("/views/update-package-prices", PacoteController.updatePackagePrices);
 
 export { router };

@@ -41,7 +41,8 @@ CREATE TABLE Viagem (
     id UUID PRIMARY KEY,
     data_inicio DATE,
     data_fim DATE,
-    preco_total DECIMAL(10, 2)
+    preco_total DECIMAL(10, 2),
+    destino_id UUID REFERENCES Destino(id)
 );
 
 CREATE TABLE Itinerario (
@@ -120,12 +121,12 @@ INSERT INTO Reserva (id, usuario_id, data_reserva, status) VALUES
 ('550e8400-e29b-41d4-a716-446655440019', '550e8400-e29b-41d4-a716-446655440004', CURRENT_TIMESTAMP, 'cancelada'),
 ('550e8400-e29b-41d4-a716-446655440020', '550e8400-e29b-41d4-a716-446655440005', CURRENT_TIMESTAMP, 'confirmada');
 
-INSERT INTO Viagem (id, data_inicio, data_fim, preco_total) VALUES
-('550e8400-e29b-41d4-a716-446655440021', '2024-10-01', '2024-10-10', 3000.00),
-('550e8400-e29b-41d4-a716-446655440022', '2024-11-01', '2024-11-15', 4500.00),
-('550e8400-e29b-41d4-a716-446655440023', '2024-12-01', '2024-12-10', 5000.00),
-('550e8400-e29b-41d4-a716-446655440024', '2024-09-15', '2024-09-25', 4000.00),
-('550e8400-e29b-41d4-a716-446655440025', '2024-08-01', '2024-08-10', 3500.00);
+INSERT INTO Viagem (id, data_inicio, data_fim, preco_total, destino_id) VALUES
+('550e8400-e29b-41d4-a716-446655440021', '2024-10-01', '2024-10-10', 3000.00, '550e8400-e29b-41d4-a716-446655440006'),
+('550e8400-e29b-41d4-a716-446655440022', '2024-11-01', '2024-11-15', 4500.00, '550e8400-e29b-41d4-a716-446655440007'),
+('550e8400-e29b-41d4-a716-446655440023', '2024-12-01', '2024-12-10', 5000.00, '550e8400-e29b-41d4-a716-446655440008'),
+('550e8400-e29b-41d4-a716-446655440024', '2024-09-15', '2024-09-25', 4000.00, '550e8400-e29b-41d4-a716-446655440009'),
+('550e8400-e29b-41d4-a716-446655440025', '2024-08-01', '2024-08-10', 3500.00, '550e8400-e29b-41d4-a716-446655440010');
 
 INSERT INTO Itinerario (id, viagem_id, dia, descricao) VALUES
 ('550e8400-e29b-41d4-a716-446655440026', '550e8400-e29b-41d4-a716-446655440021', 1, 'Chegada a Paris'),
@@ -243,3 +244,44 @@ CREATE TRIGGER AtualizaDestinoTrigger
 AFTER INSERT OR UPDATE ON avaliacao
 FOR EACH ROW
 EXECUTE FUNCTION AtualizaDestino();
+
+CREATE OR REPLACE PROCEDURE AtualizarPrecoPacotes()
+AS $$
+DECLARE
+    rec RECORD;
+    novo_preco NUMERIC(10,2);
+    data_atual DATE := CURRENT_DATE;
+    estacao VARCHAR(10);
+    ajuste_percentual NUMERIC(5, 2);
+BEGIN
+
+    IF EXTRACT(MONTH FROM data_atual) BETWEEN 9 AND 11 THEN
+        estacao := 'Primavera';
+    ELSIF EXTRACT(MONTH FROM data_atual) BETWEEN 3 AND 5 THEN
+        estacao := 'Outono';
+    ELSIF EXTRACT(MONTH FROM data_atual) BETWEEN 6 AND 8 THEN
+        estacao := 'Inverno';
+    ELSE
+        estacao := 'Verão';
+    END IF;
+
+    FOR rec IN (SELECT id, preco_base, destino_id FROM pacote_turistico) LOOP
+
+        ajuste_percentual := 0.0;
+
+        IF estacao = 'Verão' THEN
+            ajuste_percentual := 0.15;
+        ELSIF estacao = 'Inverno' THEN
+            ajuste_percentual := - 0.10;
+        END IF;
+
+        novo_preco := rec.preco_base * (1 + ajuste_percentual);
+
+        UPDATE pacote_turistico
+        SET preco_base = novo_preco
+        WHERE id = rec.id;
+
+        COMMIT;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;

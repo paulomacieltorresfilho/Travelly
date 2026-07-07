@@ -12,4 +12,8 @@ export class PacoteRepository implements IPacoteRepository {
     );
     return result.rows || null;
   }
+
+  async updatePrices(): Promise<void> {
+    await dbConnection.query("CALL AtualizarPrecoPacotes()");
+  }
 }

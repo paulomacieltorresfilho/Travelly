@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   AvaliacaoCompleteData,
   AvaliacaoCompleteDataResponse,
@@ -38,6 +38,19 @@ export default function ListaAvaliacoes() {
       .then((res) => {
         console.log(res.data.completeRatingsList);
         setData(res.data.completeRatingsList);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  const onPress = useCallback(() => {
+    setLoading(true);
+    axios.post("http://localhost:8664/api/views/update-package-prices")
+      .then((res) => {
+        console.log(res.data.message);
         setLoading(false);
       })
       .catch((err) => {
@@ -109,6 +122,7 @@ export default function ListaAvaliacoes() {
               ))}
             </tbody>
           </table>
+          <button onClick={onPress}>Atualizar Preços dos Pacotes</button>
         </div>
       </main>
     </>
