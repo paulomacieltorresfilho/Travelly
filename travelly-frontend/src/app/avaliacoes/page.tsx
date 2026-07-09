@@ -12,6 +12,7 @@ import {
   faPlane,
   faCalendar,
   faChartSimple,
+  faX
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import axios from "axios";
@@ -29,6 +30,8 @@ export function Estrelas({ nota }: { nota: number }) {
 export default function ListaAvaliacoes() {
   const [data, setData] = useState<AvaliacaoCompleteData[]>([]);
   const [loading, setLoading] = useState(true);
+  const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+  const usuario_id = usuario.id;
 
   useEffect(() => {
     axios
@@ -58,6 +61,19 @@ export default function ListaAvaliacoes() {
         setLoading(false);
       });
   }, []);
+
+  const onClickDelete = (id: string) => {
+    axios.delete("http://localhost:8664/api/avaliacao/delete", { data: { id } })
+      .then((res) => {
+        console.log(res.data.message);
+        setLoading(false);
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }
 
   if (loading) {
     return (
@@ -95,7 +111,8 @@ export default function ListaAvaliacoes() {
                 <th>
                   <FontAwesomeIcon icon={faCalendar} /> Data
                 </th>
-                <th></th>
+                <th></th>                <th></th>
+
               </tr>
             </thead>
             <tbody>
@@ -112,6 +129,11 @@ export default function ListaAvaliacoes() {
                     {new Date(avaliacao.data_avaliacao).toLocaleDateString(
                       "pt-BR"
                     )}
+                  </td>
+                  <td>
+                      {usuario_id === avaliacao.usuario_id && (
+                        <FontAwesomeIcon icon={faX} color="red" onClick={() => onClickDelete(avaliacao.avaliacao_id)} />
+                      )}
                   </td>
                   <td>
                     <Link href={`/avaliacoes/${avaliacao.avaliacao_id}`}>

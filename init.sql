@@ -22,8 +22,8 @@ CREATE TABLE Reserva (
 
 CREATE TABLE Avaliacao (
     id UUID PRIMARY KEY,
-    usuario_id UUID REFERENCES Usuario(id),
-    destino_id UUID REFERENCES Destino(id),
+    usuario_id UUID REFERENCES Usuario(id) ON DELETE CASCADE,
+    destino_id UUID REFERENCES Destino(id) ON DELETE CASCADE,
     nota INTEGER,
     comentario TEXT,
     data_avaliacao TIMESTAMP
@@ -31,7 +31,7 @@ CREATE TABLE Avaliacao (
 
 CREATE TABLE Pagamento (
     id UUID PRIMARY KEY,
-    reserva_id UUID REFERENCES Reserva(id),
+    reserva_id UUID REFERENCES Reserva(id) ON DELETE CASCADE,
     metodo_pagamento VARCHAR(50),
     valor_pago DECIMAL(10, 2),
     data_pagamento TIMESTAMP
@@ -42,12 +42,12 @@ CREATE TABLE Viagem (
     data_inicio DATE,
     data_fim DATE,
     preco_total DECIMAL(10, 2),
-    destino_id UUID REFERENCES Destino(id)
+    destino_id UUID REFERENCES Destino(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Itinerario (
     id UUID PRIMARY KEY,
-    viagem_id UUID REFERENCES Viagem(id),
+    viagem_id UUID REFERENCES Viagem(id) ON DELETE CASCADE,
     dia INTEGER,
     descricao TEXT
 );
@@ -67,14 +67,14 @@ CREATE TABLE Transporte (
 );
 
 CREATE TABLE Itinerario_Hospedagem (
-    itinerario_id UUID REFERENCES Itinerario(id),
-    hospedagem_id UUID REFERENCES Hospedagem(id),
+    itinerario_id UUID REFERENCES Itinerario(id) ON DELETE CASCADE,
+    hospedagem_id UUID REFERENCES Hospedagem(id) ON DELETE CASCADE,
     PRIMARY KEY (itinerario_id, hospedagem_id)
 );
 
 CREATE TABLE Itinerario_Transporte (
-    itinerario_id UUID REFERENCES Itinerario(id),
-    transporte_id UUID REFERENCES Transporte(id),
+    itinerario_id UUID REFERENCES Itinerario(id) ON DELETE CASCADE,
+    transporte_id UUID REFERENCES Transporte(id) ON DELETE CASCADE,
     PRIMARY KEY (itinerario_id, transporte_id)
 );
 
@@ -84,12 +84,12 @@ CREATE TABLE Pacote_turistico (
     nome VARCHAR(100),
     descricao TEXT,
     preco_base DECIMAL(10, 2),
-    destino_id UUID REFERENCES Destino(id)
+    destino_id UUID REFERENCES Destino(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Reserva_Viagem (
-    reserva_id UUID REFERENCES Reserva(id),
-    viagem_id UUID REFERENCES Viagem(id),
+    reserva_id UUID REFERENCES Reserva(id) ON DELETE CASCADE,
+    viagem_id UUID REFERENCES Viagem(id) ON DELETE CASCADE,
     PRIMARY KEY (reserva_id, viagem_id)
 );
 
